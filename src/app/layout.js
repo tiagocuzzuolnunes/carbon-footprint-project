@@ -1,5 +1,6 @@
 import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 
 const goPoppins = Poppins({
   variable: "--font-poppins",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${goPoppins.variable} ${goMontserrat.variable} antialiased`}
       >
+        <Header />
         {children}
       </body>
     </html>
