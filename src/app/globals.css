@@ -6,6 +6,7 @@
   --secondary: #A0D8EF;
   --highlight: #FFE599;
   --colorForText: #3E3E3E;
+  --lighterText: #A3A3A3;
   --detail: #EDE6DA;
 }
 
@@ -15,6 +16,7 @@
   --color-secondary: var(--secondary);
   --color-highlight: var(--highlight);
   --color-colorForText: var(--colorForText);
+  --color-lighterText: var(--lighterText);
   --color-detail: var(--detail);
   --font-text: var(--font-poppins);
   --font-display: var(--font-montserrat);
