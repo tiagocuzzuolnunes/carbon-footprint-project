@@ -2,10 +2,20 @@
 
 :root {
   --background: #F9FAF8;
+  --primary: #5BA96B;
+  --secondary: #A0D8EF;
+  --highlight: #FFE599;
+  --colorForText: #3E3E3E;
+  --detail: #EDE6DA;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-highlight: var(--highlight);
+  --color-colorForText: var(--colorForText);
+  --color-detail: var(--detail);
   --font-text: var(--font-poppins);
   --font-display: var(--font-montserrat);
 }
