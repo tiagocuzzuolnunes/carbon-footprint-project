@@ -1,3 +1,4 @@
+import "@/i18n.js"
 import CtaSection from "@/components/CtaSection";
 import Header from "@/components/Header";
 import InformativeSection from "@/components/InformativeSection";

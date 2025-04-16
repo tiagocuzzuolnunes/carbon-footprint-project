@@ -1,3 +1,4 @@
+
 import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -20,6 +21,7 @@ export const metadata = {
 };
 console.log("testing")
 export default function RootLayout({ children }) {
+  // const { i18n } = useTranslation();
   return (
     <html lang="en">
       <body
