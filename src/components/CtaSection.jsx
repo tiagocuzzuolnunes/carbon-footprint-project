@@ -1,6 +1,9 @@
+'use client'
+
 import Button from "./Button"
 
 export default function CtaSection() {
+
     return(
         <section className="flex flex-col items-center p-5">
             <img src="/banner2.png" alt="Picture of futuristic nature harmony with society" className="w-full rounded-xl" />

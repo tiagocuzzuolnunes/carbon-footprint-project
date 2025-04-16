@@ -1,4 +1,5 @@
 
+
 import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -20,17 +21,20 @@ export const metadata = {
   description: "Calculate your company's carbon footprint",
 };
 console.log("testing")
-export default function RootLayout({ children }) {
-  // const { i18n } = useTranslation();
+
+export default function RootLayout({ children, params }) {
+
+ 
   return (
     <html lang="en">
       <body
         className={`${goPoppins.variable} ${goMontserrat.variable} antialiased`}
       >
-        <Header />
-        {children}
-        <Footer />
-      </body>
+        
+          <Header />
+          {children}
+          <Footer />
+       </body>
     </html>
   );
 }
