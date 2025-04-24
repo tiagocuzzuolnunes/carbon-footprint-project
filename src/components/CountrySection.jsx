@@ -17,12 +17,12 @@ export default function CountrySection() {
 
     return (
         <div className="p-4">
-            <h1 className="text-xl font-bold">Países</h1>
-            <ul>
+            <h1 className="text-xl font-bold">Which country are you from?</h1>
+            <select>
                 {countries.map((c) => (
-                    <li key={c.country_id}>{c.country_name}</li>
+                    <option key={c.country_id}>{c.country_name}</option>
                 ))}
-            </ul>
+            </select>
         </div>
     )
 }

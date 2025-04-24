@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Calculations {
+  user_id         Int
+  country_id      Int
+  factor_id       Int
+  calculation_id  String          @id @db.VarChar(100)
+  Countries       Countries       @relation(fields: [country_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "Calculations_Countries_FK")
+  EmissionFactors EmissionFactors @relation(fields: [factor_id], references: [factor_id], onDelete: NoAction, onUpdate: NoAction, map: "Calculations_EmissionFactors_FK")
+  Users           Users           @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "Calculations_Users_FK")
+
+  @@index([country_id], map: "Calculations_Countries_FK")
+  @@index([factor_id], map: "Calculations_EmissionFactors_FK")
+  @@index([user_id], map: "Calculations_Users_FK")
+}
+
+model CompanyVehicles {
+  vehicle_id            Int                     @id
+  vehicle_type          String                  @db.VarChar(100)
+  vehicle_model         String                  @db.VarChar(100)
+  vehicle_mileage       Int
+  user_id               Int
+  Users                 Users                   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "CompanyVehicles_Users_FK")
+  Vehicle_Fuel_Relation Vehicle_Fuel_Relation[]
+
+  @@index([user_id], map: "CompanyVehicles_Users_FK")
+}
+
+model Countries {
+  country_id      Int               @id
+  country_name    String            @db.VarChar(100)
+  Calculations    Calculations[]
+  Electricity     Electricity[]
+  EmissionFactors EmissionFactors[]
+  Emissions       Emissions[]
+  Travel          Travel[]
+  Users           Users[]
+  Water           Water[]
+}
+
+model Electricity {
+  electricity_id     Int                @id
+  electricity_type   String             @db.VarChar(100)
+  electricity_use    Float
+  country_id         Int
+  category_id        Int
+  factor_id          Int
+  Countries          Countries          @relation(fields: [country_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "Electricity_Countries_FK")
+  EmissionCategories EmissionCategories @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "Electricity_EmissionCategories_FK")
+  EmissionFactors    EmissionFactors    @relation(fields: [factor_id], references: [factor_id], onDelete: NoAction, onUpdate: NoAction, map: "Electricity_EmissionFactors_FK")
+
+  @@index([country_id], map: "Electricity_Countries_FK")
+  @@index([category_id], map: "Electricity_EmissionCategories_FK")
+  @@index([factor_id], map: "Electricity_EmissionFactors_FK")
+}
+
+model EmissionCategories {
+  category_id     Int               @id
+  category_name   String            @db.VarChar(100)
+  Electricity     Electricity[]
+  EmissionFactors EmissionFactors[]
+  Emissions       Emissions[]
+  Fuel            Fuel[]
+  Travel          Travel[]
+  Water           Water[]
+}
+
+model EmissionFactors {
+  factor_id          Int                @id
+  category_id        Int
+  subcategory        String?            @db.VarChar(100)
+  country_id         Int
+  factor_num         Decimal            @db.Decimal(10, 0)
+  Calculations       Calculations[]
+  Electricity        Electricity[]
+  Countries          Countries          @relation(fields: [country_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "EmissionFactors_Countries_FK")
+  EmissionCategories EmissionCategories @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "EmissionFactors_EmissionCategories_FK")
+  Travel             Travel[]
+  Water              Water[]
+
+  @@index([country_id], map: "EmissionFactors_Countries_FK")
+  @@index([category_id], map: "EmissionFactors_EmissionCategories_FK")
+}
+
+model Emissions {
+  emission_id        Int                @id @default(autoincrement())
+  user_id            Int
+  country_id         Int
+  category_id        Int
+  emission_value     Decimal            @db.Decimal(10, 0)
+  Countries          Countries          @relation(fields: [country_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "Emissions_Countries_FK")
+  EmissionCategories EmissionCategories @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "Emissions_EmissionCategories_FK")
+  Users              Users              @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "Emissions_Users_FK")
+
+  @@index([country_id], map: "Emissions_Countries_FK")
+  @@index([category_id], map: "Emissions_EmissionCategories_FK")
+  @@index([user_id], map: "Emissions_Users_FK")
+}
+
+model Fuel {
+  fuel_id               Float                   @id
+  fuel_name             String                  @db.VarChar(100)
+  category_id           Int?
+  EmissionCategories    EmissionCategories?     @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "Fuel_EmissionCategories_FK")
+  Vehicle_Fuel_Relation Vehicle_Fuel_Relation[]
+
+  @@index([category_id], map: "Fuel_EmissionCategories_FK")
+}
+
+model Travel {
+  travel_id          Int                @id
+  travel_type        String             @db.VarChar(100)
+  travel_mileage     Int
+  country_id         Int
+  emission_id        Int
+  factor_id          Int
+  Countries          Countries          @relation(fields: [country_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "Travel_Countries_FK")
+  EmissionCategories EmissionCategories @relation(fields: [emission_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "Travel_EmissionCategories_FK")
+  EmissionFactors    EmissionFactors    @relation(fields: [factor_id], references: [factor_id], onDelete: NoAction, onUpdate: NoAction, map: "Travel_EmissionFactors_FK")
+
+  @@index([country_id], map: "Travel_Countries_FK")
+  @@index([emission_id], map: "Travel_EmissionCategories_FK")
+  @@index([factor_id], map: "Travel_EmissionFactors_FK")
+}
+
+model Users {
+  user_id         Int               @id
+  user_name       String            @db.VarChar(100)
+  user_company    String            @db.VarChar(100)
+  user_email      String            @db.VarChar(100)
+  country_id      Int
+  Calculations    Calculations[]
+  CompanyVehicles CompanyVehicles[]
+  Emissions       Emissions[]
+  Countries       Countries         @relation(fields: [country_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "Users_Countries_FK")
+
+  @@index([country_id], map: "Users_Countries_FK")
+}
+
+model Vehicle_Fuel_Relation {
+  vehicle_id               Int
+  fuel_id                  Float
+  vehicle_fuel_relation_id String          @id @map("vehicle-fuel_relation_id") @db.VarChar(100)
+  CompanyVehicles          CompanyVehicles @relation(fields: [vehicle_id], references: [vehicle_id], onDelete: NoAction, onUpdate: NoAction, map: "Vehicle_Fuel_Relation_CompanyVehicles_FK")
+  Fuel                     Fuel            @relation(fields: [fuel_id], references: [fuel_id], onDelete: NoAction, onUpdate: NoAction, map: "Vehicle_Fuel_Relation_Fuel_FK")
+
+  @@index([vehicle_id], map: "Vehicle_Fuel_Relation_CompanyVehicles_FK")
+  @@index([fuel_id], map: "Vehicle_Fuel_Relation_Fuel_FK")
+}
+
+model Water {
+  water_id           Int?
+  water_use          Int                @id
+  country_id         Int
+  emission_id        Int
+  factor_id          Int
+  Countries          Countries          @relation(fields: [country_id], references: [country_id], onDelete: NoAction, onUpdate: NoAction, map: "Water_Countries_FK")
+  EmissionCategories EmissionCategories @relation(fields: [emission_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "Water_EmissionCategories_FK")
+  EmissionFactors    EmissionFactors    @relation(fields: [factor_id], references: [factor_id], onDelete: NoAction, onUpdate: NoAction, map: "Water_EmissionFactors_FK")
+
+  @@index([country_id], map: "Water_Countries_FK")
+  @@index([emission_id], map: "Water_EmissionCategories_FK")
+  @@index([factor_id], map: "Water_EmissionFactors_FK")
+}
