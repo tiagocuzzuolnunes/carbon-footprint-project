@@ -1,6 +1,7 @@
 'use client'
 
 import Button from "./Button"
+import Link from "next/link"
 
 export default function CtaSection() {
 
@@ -11,8 +12,8 @@ export default function CtaSection() {
                 <h1 className="pt-5 text-center text-3xl font-medium text-colorForText">Calculate Your Business Carbon Footprint</h1>
                 <p className="py-5 text-center text-lg text-colorForText">Make your business sustainable and eco-friendly</p>
                 <div className="flex flex-col gap-3 w-full">
-                    <Button isMain={true} type='button' content='Start Now' />
-                    <Button isMain={false} type='button' content='Learn More' />
+                    <Link href="/calculate"><Button isMain={true} type='button' content='Start Now' /></Link>
+                    <Link href="/learnmore"><Button isMain={false} type='button' content='Learn More' /></Link>
                 </div>
             </div>
         </section>

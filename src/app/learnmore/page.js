@@ -5,12 +5,10 @@ import LearnSection from "@/components/EducationSection";
 import Image from "next/image";
 import CountrySection from "@/components/CountrySection";
 
-export default function Calculate() {
+export default function LearnMore() {
     return (
         <div>
-            <StartCalculusSection />
-            <CountrySection />
-            <LearnSection />
+            LEARN MORE ABOUT THE CALCULATOR
         </div>
     )
 }

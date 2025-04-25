@@ -8,9 +8,7 @@ import CountrySection from "@/components/CountrySection";
 export default function Calculate() {
     return (
         <div>
-            <StartCalculusSection />
-            <CountrySection />
-            <LearnSection />
+            LEARN HERE
         </div>
     )
 }

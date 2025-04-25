@@ -1,8 +1,7 @@
 'use client'
 
 import Button from "./Button"
-import GET from '@/api/users/route.js'
-import POST from '@/api/users/route.js'
+
 
 export default function StartCalculusSection() {
 

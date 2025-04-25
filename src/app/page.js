@@ -2,7 +2,7 @@
 import CtaSection from "@/components/CtaSection";
 import Header from "@/components/Header";
 import InformativeSection from "@/components/InformativeSection";
-import LearnSection from "@/components/LearnSection";
+import LearnSection from "@/components/EducationSection";
 import Image from "next/image";
 
 
