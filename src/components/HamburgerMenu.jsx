@@ -33,7 +33,7 @@ export default function HamburgerMenu() {
                     <ul>
                         <Link href="/calculate" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2">Start Now</li></Link>
                         <Link href="/learnmore" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2">Learn More</li></Link>
-                        <Link href="/educate" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2">Education</li></Link>
+                        {/* <Link href="/educate" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2">Education</li></Link> */}
                         <Link href="/contact" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2">Contact</li></Link>
                     </ul>
                 </nav>

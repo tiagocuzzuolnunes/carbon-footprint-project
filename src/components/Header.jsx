@@ -21,7 +21,7 @@ export default function Header() {
                 <ul className="flex gap-6 items-center">
                 <Link href="/learnmore" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2 hover:text-lighterText">Learn More</li></Link>
                 <Link href="/contact" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2 hover:text-lighterText">Contact</li></Link>
-                <Link href="/educate" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2 hover:text-lighterText">Education</li></Link>
+                {/* <Link href="/educate" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2 hover:text-lighterText">Education</li></Link> */}
                 <Link href="/calculate" onClick={() => setIsClicked(prev => prev == 1 ? 0 : 1)}><li className="py-2 hover:text-lighterText"><Button type="submit" content='Start Now' isMain={true}></Button></li></Link>
                 </ul>
             </div>
