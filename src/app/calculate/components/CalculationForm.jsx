@@ -1,8 +1,5 @@
 'use client'
 
-import Button from "@/components/Button.jsx"
-import Link from "next/link"
-
 const divInputBaseStyle = "flex flex-col justify-center bg-primary rounded-xl p-4";
 
 const InputBoxBaseStyle = "bg-detail rounded-md border-1 text-colorForText p-1 mt-1";
