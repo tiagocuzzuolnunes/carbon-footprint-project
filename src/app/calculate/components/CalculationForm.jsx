@@ -1,10 +1,212 @@
 'use client'
 
+import { useState } from "react";
+
 const divInputBaseStyle = "flex flex-col justify-center bg-primary rounded-xl p-4";
 
 const InputBoxBaseStyle = "bg-detail rounded-md border-1 text-colorForText p-1 mt-1";
 
 const InputTitle = "text-xl text-colorForText font-extrabold";
+
+const countries = [
+    {
+        name: "ísland",
+        code: "IS",
+        id: 1
+    },
+    {
+        name: "New Zealand",
+        code: "NZ",
+        id: 2
+    },
+    {
+        name: "Brasil",
+        code: "BR",
+        id: 3
+    },
+    {
+        name: "United States",
+        code: "US",
+        id: 4
+    }
+];
+
+let name = "";
+
+let company = "";
+
+let companyHasVehicles = false;
+
+const fuelTypes = [
+    {
+        type: "Gasoline",
+        id: 1
+    },
+    {
+        type: "Ethanol",
+        id: 2
+    },
+    {
+        type: "Diesel",
+        id: 3
+    },
+    {
+        type: "CNG",
+        id: 4
+    },
+    {
+        type: "EVs",
+        id: 5
+    },
+    {
+        type: "Hybrid",
+        id: 6
+    }
+];
+
+const companyVehicles = [
+    {
+        type: "Ground Small",
+        example: "(motorcycles, cars, vans)",
+        id: 1,
+        // number: 0
+    },
+    {
+        type: "Ground Big",
+        example: "(buses, trucks)",
+        id: 2
+    },
+    {
+        type: "Special Ground Vehicles",
+        example: "(tractors, excavators)",
+        id: 3
+    },
+    {
+        type: "Air Vehicles",
+        example: "(planes, helicopters)",
+        id: 4
+    },
+    {
+        type: "Water Vehicles",
+        example: "(boats, ships)",
+        id: 5
+    }
+];
+
+const employeeTransport = [
+    {
+        type: "Gas car",
+        id: 1,
+        // number: 0
+    },
+    {
+        type: "Car (electric)",
+        id: 2
+    },
+    {
+        type: "Car (Hybrid)",
+        id: 3
+    },
+    {
+        type: "Motorcycle",
+        id: 4
+    },
+    {
+        type: "Public Transport",
+        id: 5
+    },
+    {
+        type: "Bike",
+        id: 6
+    },
+    {
+        type: "Remote",
+        id: 7
+    }
+];
+
+const electricityGenerationTypes = [
+    {
+        type: "Hydropower",
+        id: 1
+        // kwh?
+    },
+    {
+        type: "Thermoelectric",
+        id: 2
+        // kwh?
+    },
+    {
+        type: "Wind",
+        id: 3
+        // kwh?
+    },
+    {
+        type: "Solar",
+        id: 4
+        // kwh?
+    },
+    {
+        type: "Nuclear",
+        id: 5
+        // kwh?
+    },
+    {
+        type: "Geothermal",
+        id: 6
+        // kwh?
+    }
+];
+
+let hasTravel = false;
+
+const travelTypes = [
+    {
+        type: "Ground",
+        id: 1
+        // km?
+    },
+    {
+        type: "Air",
+        id: 2
+    },
+    {
+        type: "Water",
+        id: 3
+    }
+]
+
+const wasteDestination = [
+    {
+        type: "Landfill",
+        id: 1
+        // km?
+    },
+    {
+        type: "Incineration",
+        id: 2
+    },
+    {
+        type: "Recycling",
+        id: 3
+    },
+    {
+        type: "Composting",
+        id: 4
+    },
+    {
+        type: "Reuse",
+        id: 5
+    },
+    {
+        type: "Hazard waste",
+        id: 6
+    },
+    {
+        type: "Other",
+        id: 7
+    }
+]
 
 
 export default function CalculationForm() {
@@ -12,18 +214,17 @@ export default function CalculationForm() {
     return (
         <section className="grid place-items-center p-5">
 
-            <form className="grid gap-8" action="/submit" method="POST">
+            <form className="grid gap-8">
 
                 <fieldset className={`${divInputBaseStyle}`}>
 
                     <label className={`${InputTitle}`} htmlFor="country">Which country are you from?</label>
 
-                    <select className={`${InputBoxBaseStyle}`} name="country" id="country">
+                    <select className={`${InputBoxBaseStyle}`} name="country" id="country" >
                         <option value="">Choose a country...</option>
-                        <option value="ÍS">Ísland</option>
-                        <option value="NZ">New Zealand</option>
-                        <option value="BR">Brasil</option>
-                        <option value="US">United States</option>
+                        {countries.map((country, index) => (
+                            <option value={country.code} key={index}>{country.name}</option>
+                        ))}
                     </select>
 
                 </fieldset>
@@ -49,7 +250,7 @@ export default function CalculationForm() {
 
                     <label className={`${InputTitle}`} htmlFor="hasVehicles">Does your company use vehicles? (self-owned and third-party)</label>
 
-                    <select className={`${InputBoxBaseStyle}`} name="hasVehicles" id="hasVehicles">
+                    <select className={`${InputBoxBaseStyle}`} name="hasVehicles" id="hasVehicles" >
                         <option value="">Choose a option...</option>
                         <option value="YesVehicles">Yes</option>
                         <option value="NoVehicles">No</option>
@@ -57,143 +258,38 @@ export default function CalculationForm() {
 
                 </fieldset>
 
-
                 <fieldset className={`${divInputBaseStyle}`}>
 
-                    <label className={`${InputTitle}`}>Which types of vehicles does your company have?</label>
+                    <label className={`${InputTitle}`}>Which types of fuels does your company's vehicles run on?</label>
 
-                    <div>
-                        <input type="checkbox" id="groundSmall" name="groundSmall" />
-
-                        <label className="ml-2" htmlFor="groundSmall">Ground Small (motorcycles, cars, vans)</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="groundSmallMileage">What is the total mileage? (in kilometers)</label>
-
-                        <input className={`${InputBoxBaseStyle}`} placeholder="Ex: 12 km" type="text" id="groundSmallMileage" name="groundSmallMileage" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="groundBig" name="groundBig" />
-
-                        <label className="ml-2" htmlFor="groundBig">Ground Big (buses, trucks)</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="groundBigMileage">What is the total mileage? (in kilometers)</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="groundBigMileage" name="groundBigMileage" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="groundSpecial" name="groundSpecial" />
-
-                        <label className="ml-2" htmlFor="groundSpecial">Special Ground Vehicles (tractors, excavators, maintenence)</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="groundSpecialMileage">What is the total mileage? (in kilometers)</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="groundSpecialMileage" name="groundSpecialMileage" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="airVehicles" name="airVehicles" />
-
-                        <label className="ml-2" htmlFor="airVehicles">Air Vehicles (planes, helicopters)</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="airVehiclesMileage">What is the total mileage? (in kilometers)</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="airVehiclesMileage" name="airVehiclesMileage" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="waterVehicles" name="waterVehicles" />
-
-                        <label className="ml-2" htmlFor="waterVehicles">Water Vehicles (boats, ships)</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="waterVehiclesMileage">What is the total mileage? (in kilometers)</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="waterVehiclesMileage" name="waterVehiclesMileage" />
-
-                    </div>
+                    {fuelTypes.map((fuel, index) => (
+                        <div key={index}>
+                            <input type="checkbox" id={fuel.type} name={fuel.type} />
+                            <label className="ml-2" htmlFor={fuel.type}>{fuel.type}</label>
+                        </div>
+                    ))}
 
                 </fieldset>
 
                 <fieldset className={`${divInputBaseStyle}`}>
 
-                    <label className={`${InputTitle}`}>Which types of fuels does your company's vehicles run on?</label>
+                    <label className={`${InputTitle}`}>Which types of vehicles does your company use?</label>
 
-                    <div>
+                    {companyVehicles.map((vehicle, index) => (
+                        <div key={index}>
+                            <input type="checkbox" id={vehicle.type} name={vehicle.type} />
+                            <label className="ml-2" htmlFor={vehicle.type}>{vehicle.type} {vehicle.example}</label>
 
-                        <input type="checkbox" id="gasoline" name="gasoline" />
+                            <div className={`${divInputBaseStyle}`}>
 
-                        <label className="ml-2" htmlFor="gasoline">Gasoline</label>
+                                <label htmlFor="groundSmallMileage">What is the total mileage? (in kilometers)</label>
 
-                    </div>
+                                <input className={`${InputBoxBaseStyle}`} placeholder="Ex: 12 km" type="text" id="groundSmallMileage" name="groundSmallMileage" />
 
-                    <div>
+                            </div>
+                        </div>
+                    ))}
 
-                        <input type="checkbox" id="ethanol" name="ethanol" />
-
-                        <label className="ml-2" htmlFor="ethanol">Ethanol</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="diesel" name="diesel" />
-
-                        <label className="ml-2" htmlFor="diesel">Diesel</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="CNG" name="CNG" />
-
-                        <label className="ml-2" htmlFor="CNG">CNG</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="evs" name="evs" />
-
-                        <label className="ml-2" htmlFor="evs">EVs</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="hybrid" name="hybrid" />
-
-                        <label className="ml-2" htmlFor="hybrid">Hybrid</label>
-
-                    </div>
 
                 </fieldset>
 
@@ -201,125 +297,17 @@ export default function CalculationForm() {
 
                     <label className={`${InputTitle}`}>What kind of transportation do your employees use to get to work?</label>
 
-                    <div>
+                    {employeeTransport.map((transport, index) => (
+                        <div key={index}>
+                            <input type="checkbox" id={transport.type} name={transport.type} />
+                            <label className="ml-2" htmlFor={transport.type}>{transport.type}</label>
 
-                        <input type="checkbox" id="gasCar" name="gasCar" />
-
-                        <label className="ml-2" htmlFor="gasCar">Car (run on gas)</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="gasCarNum">How many?</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="gasCarNum" name="gasCarNum" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="evCar" name="evCar" />
-
-                        <label className="ml-2" htmlFor="evCar">Car (electric)</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="evCarNum">How many?</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="evCarNum" name="evCarNum" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="hybridCar" name="hybridCar" />
-
-                        <label className="ml-2" htmlFor="hybridCar">Car (Hybrid)</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="hybridCarNum">How many?</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="hybridCarNum" name="hybridCarNum" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="motorcycle" name="motorcycle" />
-
-                        <label className="ml-2" htmlFor="motorcycle">Motorcycle</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="motorcycleNum">How many?</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="motorcycleNum" name="motorcycleNum" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="publicTransport" name="publicTransport" />
-
-                        <label className="ml-2" htmlFor="publicTransport">Public Transportation</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="publicTransportNum">How many?</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="publicTransportNum" name="publicTransportNum" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="bike" name="bike" />
-
-                        <label className="ml-2" htmlFor="bike">Bycicle</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="bikeNum">How many?</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="bikeNum" name="bikeNum" />
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="remote" name="remote" />
-
-                        <label className="ml-2" htmlFor="remote">Remote Work</label>
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="remoteNum">How many?</label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="remoteNum" name="remoteNum" />
-
-                    </div>
-
-                </fieldset>
-
-                <fieldset className={`${divInputBaseStyle}`}>
-
-                    <label className={`${InputTitle}`}>How much electricity does your company usually uses in a month (kWh)?</label>
-
-                    <input className={`${InputBoxBaseStyle}`} placeholder="Ex: 9 kWh" type="text" name="electrictyUse" id="electricityUse" />
+                            <div className={`${divInputBaseStyle}`}>
+                                <label htmlFor={transport.type}>How many?</label>
+                                <input className={`${InputBoxBaseStyle}`} type="text" id="gasCarNum" name="gasCarNum" />
+                            </div>
+                        </div>
+                    ))}
 
                 </fieldset>
 
@@ -327,54 +315,17 @@ export default function CalculationForm() {
 
                     <label className={`${InputTitle}`}>What is(are) the generation method(s) of the eletricity used in your company?</label>
 
-                    <div>
+                    {electricityGenerationTypes.map((electricity, index) => (
+                        <div key={index}>
+                            <input type="checkbox" id={electricity.type} name={electricity.type} />
+                            <label className="ml-2" htmlFor={electricity.type}>{electricity.type}</label>
 
-                        <input type="checkbox" id="hydropower" name="hydropower" />
-
-                        <label className="ml-2" htmlFor="hydropower">Hydropower</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="thermoelectric" name="thermoelectric" />
-
-                        <label className="ml-2" htmlFor="thermoelectric">Thermoelectric</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="wind" name="wind" />
-
-                        <label className="ml-2" htmlFor="wind">Wind</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="solar" name="solar" />
-
-                        <label className="ml-2" htmlFor="solar">Solar</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="nuclear" name="nuclear" />
-
-                        <label className="ml-2" htmlFor="nuclear">Nuclear</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="geothermal" name="geothermal" />
-
-                        <label className="ml-2" htmlFor="geothermal">Geothermal</label>
-
-                    </div>
-
+                            <div className={`${divInputBaseStyle}`}>
+                                <label htmlFor={electricity.type}>How many kWh?</label>
+                                <input className={`${InputBoxBaseStyle}`} type="text" id="gasCarNum" name="gasCarNum" />
+                            </div>
+                        </div>
+                    ))}
                 </fieldset>
 
                 <fieldset>
@@ -395,7 +346,7 @@ export default function CalculationForm() {
 
                         <label className={`${InputTitle}`} htmlFor="hasTravel">Do you or your employees go on business trips for your company?</label>
 
-                        <select className={`${InputBoxBaseStyle}`} name="hasTravel" id="hasTravel">
+                        <select className={`${InputBoxBaseStyle}`} name="hasTravel" id="hasTravel" >
                             <option value="">Choose a option...</option>
                             <option value="YesTravel">Yes</option>
                             <option value="NoTravel">No</option>
@@ -409,29 +360,12 @@ export default function CalculationForm() {
 
                     <label className={`${InputTitle}`}>How many kilometers in travel do you and/or your employees have? (pkm)</label>
 
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="groundTravel">Ground travel: </label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="groundTravel" name="groundTravel" />
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="airTravel">Air travel: </label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="airTravel" name="airTravel" />
-
-                    </div>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label htmlFor="waterTravel">Water travel: </label>
-
-                        <input className={`${InputBoxBaseStyle}`} type="text" id="waterTravel" name="waterTravel" />
-
-                    </div>
+                    {travelTypes.map((travel, index) => (
+                        <div className={`${divInputBaseStyle}`} key={index}>
+                            <label htmlFor={travel.type}>{travel.type} travel: </label>
+                            <input className={`${InputBoxBaseStyle}`} type="text" id={travel.type} name={travel.type} />
+                        </div>
+                    ))}
 
                 </fieldset>
 
@@ -441,62 +375,12 @@ export default function CalculationForm() {
 
                         <label className={`${InputTitle}`} htmlFor="wasteDestination">What is the destination of your company's waste?</label>
 
-                        <select className={`${InputBoxBaseStyle}`} name="country" id="country">
+                        <select className={`${InputBoxBaseStyle}`} name="wasteDestination" id="wasteDestination" >
                             <option value="">Choose a option...</option>
-                            <option value="landfill">Landfill</option>
-                            <option value="incineration">Incineration</option>
-                            <option value="recycling">Recycling</option>
-                            <option value="composting">Composting</option>
-                            <option value="reuse">Reuse</option>
-                            <option value="hazard">Hazard waste</option>
-                            <option value="other">Other</option>
+                            {wasteDestination.map((waste, index) => (
+                                <option key={index} value={waste.type}>{waste.type}</option>
+                            ))}
                         </select>
-
-                    </div>
-
-                </fieldset>
-
-                <fieldset className={`${divInputBaseStyle}`}>
-
-                    <label className={`${InputTitle}`}>Which one of these materials does your company in it's regular purchases?</label>
-
-                    <div>
-
-                        <input type="checkbox" id="paper" name="paper" />
-
-                        <label className="ml-2" htmlFor="paper">Paper</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="plastic" name="plastic" />
-
-                        <label className="ml-2" htmlFor="plastic">Plastic</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="metal" name="metal" />
-
-                        <label className="ml-2" htmlFor="metal">Metal</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="glass" name="glass" />
-
-                        <label className="ml-2" htmlFor="glass">Glass</label>
-
-                    </div>
-
-                    <div>
-
-                        <input type="checkbox" id="wood" name="wood" />
-
-                        <label className="ml-2" htmlFor="wood">Wood</label>
 
                     </div>
 
