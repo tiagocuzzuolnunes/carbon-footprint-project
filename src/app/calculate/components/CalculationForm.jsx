@@ -33,9 +33,9 @@ const countries = [
 
 let name = "";
 
-let company = "";
+let company;
 
-let companyHasVehicles = false;
+let companyHasVehicles;
 
 const fuelTypes = [
     {
@@ -207,6 +207,7 @@ const wasteDestination = [
         id: 7
     }
 ]
+
 
 
 export default function CalculationForm() {
