@@ -8,233 +8,46 @@ const InputBoxBaseStyle = "bg-detail rounded-md border-1 text-colorForText p-1 m
 
 const InputTitle = "text-xl text-colorForText font-extrabold";
 
-const countries = [
-    {
-        name: "ísland",
-        code: "IS",
-        id: 1
-    },
-    {
-        name: "New Zealand",
-        code: "NZ",
-        id: 2
-    },
-    {
-        name: "Brasil",
-        code: "BR",
-        id: 3
-    },
-    {
-        name: "United States",
-        code: "US",
-        id: 4
-    }
-];
-
-let name = "";
-
-let company;
-
-let companyHasVehicles;
-
-const fuelTypes = [
-    {
-        type: "Gasoline",
-        id: 1
-    },
-    {
-        type: "Ethanol",
-        id: 2
-    },
-    {
-        type: "Diesel",
-        id: 3
-    },
-    {
-        type: "CNG",
-        id: 4
-    },
-    {
-        type: "EVs",
-        id: 5
-    },
-    {
-        type: "Hybrid",
-        id: 6
-    }
-];
-
-const companyVehicles = [
-    {
-        type: "Ground Small",
-        example: "(motorcycles, cars, vans)",
-        id: 1,
-        // number: 0
-    },
-    {
-        type: "Ground Big",
-        example: "(buses, trucks)",
-        id: 2
-    },
-    {
-        type: "Special Ground Vehicles",
-        example: "(tractors, excavators)",
-        id: 3
-    },
-    {
-        type: "Air Vehicles",
-        example: "(planes, helicopters)",
-        id: 4
-    },
-    {
-        type: "Water Vehicles",
-        example: "(boats, ships)",
-        id: 5
-    }
-];
-
-const employeeTransport = [
-    {
-        type: "Gas car",
-        id: 1,
-        // number: 0
-    },
-    {
-        type: "Car (electric)",
-        id: 2
-    },
-    {
-        type: "Car (Hybrid)",
-        id: 3
-    },
-    {
-        type: "Motorcycle",
-        id: 4
-    },
-    {
-        type: "Public Transport",
-        id: 5
-    },
-    {
-        type: "Bike",
-        id: 6
-    },
-    {
-        type: "Remote",
-        id: 7
-    }
-];
-
-const electricityGenerationTypes = [
-    {
-        type: "Hydropower",
-        id: 1
-        // kwh?
-    },
-    {
-        type: "Thermoelectric",
-        id: 2
-        // kwh?
-    },
-    {
-        type: "Wind",
-        id: 3
-        // kwh?
-    },
-    {
-        type: "Solar",
-        id: 4
-        // kwh?
-    },
-    {
-        type: "Nuclear",
-        id: 5
-        // kwh?
-    },
-    {
-        type: "Geothermal",
-        id: 6
-        // kwh?
-    }
-];
-
-let hasTravel = false;
-
-const travelTypes = [
-    {
-        type: "Ground",
-        id: 1
-        // km?
-    },
-    {
-        type: "Air",
-        id: 2
-    },
-    {
-        type: "Water",
-        id: 3
-    }
-]
-
-const wasteDestination = [
-    {
-        type: "Landfill",
-        id: 1
-        // km?
-    },
-    {
-        type: "Incineration",
-        id: 2
-    },
-    {
-        type: "Recycling",
-        id: 3
-    },
-    {
-        type: "Composting",
-        id: 4
-    },
-    {
-        type: "Reuse",
-        id: 5
-    },
-    {
-        type: "Hazard waste",
-        id: 6
-    },
-    {
-        type: "Other",
-        id: 7
-    }
-]
-
-
 
 export default function CalculationForm() {
+
+    
+    const [name, setName] = useState("");
+    const [company, setCompany] = useState("");
+    const [kms, setKms] = useState();
+    const [employees, setEmployees] = useState();
+    const [kwh, setKwh] = useState();
+    const [water, setWater] = useState();
+
+    const [result, setResult] = useState("");
+    
+    const calculateFootprint = (kms, employees, kwh, water) => {
+        kms = Number(kms) || 0;
+        employees = Number(employees) || 0;
+        kwh = Number(kwh) || 0;
+        water = Number(water) || 0;
+        
+        const footprint = (kms * 0.2) + (employees * 167) + (kwh * 0.6) + (water * 0.5)
+        return footprint.toFixed(2)
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        alert(`Name: ${name}\nCompany: ${company}\nKM's: ${kms}\nEmployees: ${employees}\nKWh: ${kwh}\nWater: ${water}`)
+        const footprint = calculateFootprint(kms, employees, kwh, water);
+        setResult(`Hello, ${name}! Your company ${company} has a carbon footprint of ${footprint} kg CO₂ per month.`);
+    
+    }
 
     return (
         <section className="grid place-items-center p-5">
 
-            <form className="grid gap-8">
+            <form onSubmit={handleSubmit} className="grid gap-8">
 
                 <fieldset className={`${divInputBaseStyle}`}>
 
-                    <label className={`${InputTitle}`} htmlFor="country">Which country are you from?</label>
+                    <label className={`${InputTitle}`} htmlFor="name">What is your first name?</label>
 
-                    <select className={`${InputBoxBaseStyle}`} name="country" id="country" >
-                        <option value="">Choose a country...</option>
-                        {countries.map((country, index) => (
-                            <option value={country.code} key={index}>{country.name}</option>
-                        ))}
-                    </select>
-
-                </fieldset>
-
-                <fieldset className={`${divInputBaseStyle}`}>
-
-                    <label className={`${InputTitle}`} htmlFor="name">What is your full name?</label>
-
-                    <input className={`${InputBoxBaseStyle}`} placeholder="Your name..." type="text" name="name" id="name" />
+                    <input className={`${InputBoxBaseStyle}`} value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name..." type="text" name="name" id="name" />
 
                 </fieldset>
 
@@ -242,91 +55,33 @@ export default function CalculationForm() {
 
                     <label className={`${InputTitle}`} htmlFor="company">What is your company's name?</label>
 
-                    <input className={`${InputBoxBaseStyle}`} placeholder="Your company's name..." type="text" name="company" id="company" />
-
-                </fieldset>
-
-
-                <fieldset className={`${divInputBaseStyle}`}>
-
-                    <label className={`${InputTitle}`} htmlFor="hasVehicles">Does your company use vehicles? (self-owned and third-party)</label>
-
-                    <select className={`${InputBoxBaseStyle}`} name="hasVehicles" id="hasVehicles" >
-                        <option value="">Choose a option...</option>
-                        <option value="YesVehicles">Yes</option>
-                        <option value="NoVehicles">No</option>
-                    </select>
+                    <input className={`${InputBoxBaseStyle}`} value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Your company's name..." type="text" name="company" id="company" />
 
                 </fieldset>
 
                 <fieldset className={`${divInputBaseStyle}`}>
 
-                    <label className={`${InputTitle}`}>Which types of fuels does your company's vehicles run on?</label>
+                    <label className={`${InputTitle}`} htmlFor="kms">How many kilometers your company's vehicles run?</label>
 
-                    {fuelTypes.map((fuel, index) => (
-                        <div key={index}>
-                            <input type="checkbox" id={fuel.type} name={fuel.type} />
-                            <label className="ml-2" htmlFor={fuel.type}>{fuel.type}</label>
-                        </div>
-                    ))}
-
-                </fieldset>
-
-                <fieldset className={`${divInputBaseStyle}`}>
-
-                    <label className={`${InputTitle}`}>Which types of vehicles does your company use?</label>
-
-                    {companyVehicles.map((vehicle, index) => (
-                        <div key={index}>
-                            <input type="checkbox" id={vehicle.type} name={vehicle.type} />
-                            <label className="ml-2" htmlFor={vehicle.type}>{vehicle.type} {vehicle.example}</label>
-
-                            <div className={`${divInputBaseStyle}`}>
-
-                                <label htmlFor="groundSmallMileage">What is the total mileage? (in kilometers)</label>
-
-                                <input className={`${InputBoxBaseStyle}`} placeholder="Ex: 12 km" type="text" id="groundSmallMileage" name="groundSmallMileage" />
-
-                            </div>
-                        </div>
-                    ))}
+                    <input className={`${InputBoxBaseStyle}`} value={kms} onChange={(e) => setKms(e.target.value)} placeholder="How many KM's..." type="text" name="kms" id="kms" />
 
 
                 </fieldset>
 
                 <fieldset className={`${divInputBaseStyle}`}>
 
-                    <label className={`${InputTitle}`}>What kind of transportation do your employees use to get to work?</label>
+                    <label className={`${InputTitle}`} htmlFor="employees">How many employees does your company have?</label>
 
-                    {employeeTransport.map((transport, index) => (
-                        <div key={index}>
-                            <input type="checkbox" id={transport.type} name={transport.type} />
-                            <label className="ml-2" htmlFor={transport.type}>{transport.type}</label>
-
-                            <div className={`${divInputBaseStyle}`}>
-                                <label htmlFor={transport.type}>How many?</label>
-                                <input className={`${InputBoxBaseStyle}`} type="text" id="gasCarNum" name="gasCarNum" />
-                            </div>
-                        </div>
-                    ))}
+                    <input className={`${InputBoxBaseStyle}`} value={employees} onChange={(e) => setEmployees(e.target.value)} placeholder="How many employees..." type="text" name="employees" id="employees" />
 
                 </fieldset>
 
                 <fieldset className={`${divInputBaseStyle}`}>
 
-                    <label className={`${InputTitle}`}>What is(are) the generation method(s) of the eletricity used in your company?</label>
+                    <label className={`${InputTitle}`} htmlFor="kwh">How many KWh does your company usually uses in a month?</label>
 
-                    {electricityGenerationTypes.map((electricity, index) => (
-                        <div key={index}>
-                            <input type="checkbox" id={electricity.type} name={electricity.type} />
-                            <label className="ml-2" htmlFor={electricity.type}>{electricity.type}</label>
+                    <input className={`${InputBoxBaseStyle}`} value={kwh} onChange={(e) => setKwh(e.target.value)} placeholder="How many KWh..." type="text" name="kwh" id="kwh" />
 
-                            <div className={`${divInputBaseStyle}`}>
-                                <label htmlFor={electricity.type}>How many kWh?</label>
-                                <input className={`${InputBoxBaseStyle}`} type="text" id="gasCarNum" name="gasCarNum" />
-                            </div>
-                        </div>
-                    ))}
                 </fieldset>
 
                 <fieldset>
@@ -335,61 +90,21 @@ export default function CalculationForm() {
 
                         <label className={`${InputTitle}`}>How much water does your company usually uses in a month (m³)?</label>
 
-                        <input className={`${InputBoxBaseStyle}`} placeholder="Ex: 33 m³" type="text" name="waterUse" id="waterUse" />
+                        <input className={`${InputBoxBaseStyle}`} value={water} onChange={(e) => setWater(e.target.value)} placeholder="Ex: 33 m³" type="text" name="waterUse" id="waterUse" />
 
                     </div>
 
                 </fieldset>
 
-                <fieldset>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label className={`${InputTitle}`} htmlFor="hasTravel">Do you or your employees go on business trips for your company?</label>
-
-                        <select className={`${InputBoxBaseStyle}`} name="hasTravel" id="hasTravel" >
-                            <option value="">Choose a option...</option>
-                            <option value="YesTravel">Yes</option>
-                            <option value="NoTravel">No</option>
-                        </select>
-
-                    </div>
-
-                </fieldset>
-
-                <fieldset className={`${divInputBaseStyle}`}>
-
-                    <label className={`${InputTitle}`}>How many kilometers in travel do you and/or your employees have? (pkm)</label>
-
-                    {travelTypes.map((travel, index) => (
-                        <div className={`${divInputBaseStyle}`} key={index}>
-                            <label htmlFor={travel.type}>{travel.type} travel: </label>
-                            <input className={`${InputBoxBaseStyle}`} type="text" id={travel.type} name={travel.type} />
-                        </div>
-                    ))}
-
-                </fieldset>
-
-                <fieldset>
-
-                    <div className={`${divInputBaseStyle}`}>
-
-                        <label className={`${InputTitle}`} htmlFor="wasteDestination">What is the destination of your company's waste?</label>
-
-                        <select className={`${InputBoxBaseStyle}`} name="wasteDestination" id="wasteDestination" >
-                            <option value="">Choose a option...</option>
-                            {wasteDestination.map((waste, index) => (
-                                <option key={index} value={waste.type}>{waste.type}</option>
-                            ))}
-                        </select>
-
-                    </div>
-
-                </fieldset>
-
-                <input className={`${divInputBaseStyle} text-white font-extrabold`} type="submit" />
+                <button onClick={calculateFootprint} className={`${divInputBaseStyle} text-white font-extrabold cursor-pointer`} type="submit">Submit</button>
 
             </form>
+
+            {result && (
+                <div className="mt-8 p-4 bg-green-200 rounded">
+                    <p>{result}</p>
+                </div>
+            )}
         </section>
     )
 }

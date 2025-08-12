@@ -7,7 +7,6 @@ export default function Calculate() {
         <div>
             <StartCalculusSection />
             <CalculationForm />
-            <LearnSection />
         </div>
     )
 }
